@@ -1,9 +1,11 @@
-#include "ScriptPCH.h"
+﻿#include "ScriptPCH.h"
 #include "DisableMgr.h"
 #include "Config.h"
+#include "Configuration/Config.h"
 #include "Player.h"
 
-uint32 MaxLevel;
+static uint32 MaxLevel, MountLevel, MountSpell;
+static bool learnmount;
 
 class LearnSpellsOnLevelUp : public PlayerScript
 {
@@ -69,6 +71,12 @@ public:
                 if (oldLevel < player->getLevel())
                     LearnSpellsForNewLevel(player, oldLevel);
             }
+        }
+
+        if (learnmount)
+        {
+            if (player->getLevel() == MountLevel)
+                player->learnSpell(MountSpell);
         }
     }
 
@@ -159,6 +167,8 @@ public:
 
             if (valid)
                 player->learnSpell(spellInfo->Id);
+
+
         }
         LearnSpellsForNewLevel(player, ++level);
     }
@@ -168,6 +178,14 @@ class LearnAllSpellsWorld : public WorldScript
 {
 public:
     LearnAllSpellsWorld() : WorldScript("LearnAllSpellsWorld") { }
+
+    void SetInitialWorldSettings()
+    {
+        learnmount = sConfigMgr->GetIntDefault("LearnMount", 0);
+        MountLevel = sConfigMgr->GetIntDefault("MountReqLevel", 20);
+        MountSpell = sConfigMgr->GetIntDefault("MountSpell", 33388);
+
+    }
 
     void OnBeforeConfigLoad(bool reload) override
     {
