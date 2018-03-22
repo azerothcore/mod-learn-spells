@@ -4,8 +4,9 @@
 #include "Configuration/Config.h"
 #include "Player.h"
 
-static uint32 MaxLevel, MountLevel, MountSpell;
+static uint32 MaxLevel, MountSpell;
 static bool learnmount;
+static uint8 MountLevel;
 
 class LearnSpellsOnLevelUp : public PlayerScript
 {
@@ -71,12 +72,12 @@ public:
                 if (oldLevel < player->getLevel())
                     LearnSpellsForNewLevel(player, oldLevel);
             }
-        }
 
-        if (learnmount)
-        {
-            if (player->getLevel() == MountLevel)
-                player->learnSpell(MountSpell);
+            if (learnmount)
+            {
+                if (player->getLevel() == MountLevel)
+                    player->learnSpell(MountSpell);
+            }
         }
     }
 
@@ -167,8 +168,6 @@ public:
 
             if (valid)
                 player->learnSpell(spellInfo->Id);
-
-
         }
         LearnSpellsForNewLevel(player, ++level);
     }
@@ -178,14 +177,6 @@ class LearnAllSpellsWorld : public WorldScript
 {
 public:
     LearnAllSpellsWorld() : WorldScript("LearnAllSpellsWorld") { }
-
-    void SetInitialWorldSettings()
-    {
-        learnmount = sConfigMgr->GetIntDefault("LearnMount", 0);
-        MountLevel = sConfigMgr->GetIntDefault("MountReqLevel", 20);
-        MountSpell = sConfigMgr->GetIntDefault("MountSpell", 33388);
-
-    }
 
     void OnBeforeConfigLoad(bool reload) override
     {
@@ -201,6 +192,9 @@ public:
             sConfigMgr->LoadMore(cfg_file.c_str());
 
             MaxLevel = sConfigMgr->GetIntDefault("MaxLevel", 80);
+            learnmount = sConfigMgr->GetIntDefault("LearnMount", 0);
+            MountLevel = sConfigMgr->GetIntDefault("MountReqLevel", 20);
+            MountSpell = sConfigMgr->GetIntDefault("MountSpell", 33388);
         }
     }
 };
