@@ -1,4 +1,4 @@
-﻿#include "ScriptPCH.h"
+#include "ScriptPCH.h"
 #include "DisableMgr.h"
 #include "Config.h"
 #include "Configuration/Config.h"
@@ -70,7 +70,11 @@ public:
             if (player->getLevel() < MaxLevel)
             {
                 if (oldLevel < player->getLevel())
+                {
                     LearnSpellsForNewLevel(player, oldLevel);
+                    ForceLearnSpell(player, oldLevel);
+                }
+                    
             }
 
             if (learnmount)
@@ -78,6 +82,8 @@ public:
                 if (player->getLevel() == MountLevel)
                     player->learnSpell(MountSpell);
             }
+
+
         }
     }
 
@@ -87,6 +93,37 @@ public:
             if (spellID == (*itr))
                 return true;
         return false;
+    }
+
+    void ForceLearnSpell(Player* player, uint8 level)
+    {
+        if (level == player->getLevel() + 1)
+            return;
+
+        switch (player->getClass())
+        {
+        case CLASS_HUNTER: 
+            if (player->getLevel() == 10)
+                player->learnSpell(1515); // Tame Beast
+            break;
+        case CLASS_SHAMAN: // Give Totems
+            switch (player->getLevel())
+            {
+            case 4: // Earth Totem
+                player->AddItem(5175, 1);
+                break;
+            case 10: // Fire Totem
+                player->AddItem(5176, 1);
+                break;
+            case 20: // Water Totem
+                player->AddItem(5177, 1);
+                break;
+            case 30: // Air Totem
+                player->AddItem(5178, 1);
+                break;
+            }
+            break;
+        }
     }
 
     void LearnSpellsForNewLevel(Player* player, uint8 level)
