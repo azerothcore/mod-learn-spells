@@ -171,7 +171,9 @@ public:
                 continue;
             if (spellInfo->SpellFamilyName != family)
                 continue;
-            if (IsIgnoredSpell(spellInfo->Id))
+            if (
+            
+            (spellInfo->Id))
                 continue;
             if (spellInfo->PowerType == POWER_FOCUS)
                 continue;
