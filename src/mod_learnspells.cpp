@@ -1,4 +1,6 @@
+#include "Chat.h"
 #include "ScriptMgr.h"
+#include "SpellInfo.h"
 #include "DisableMgr.h"
 #include "Config.h"
 #include "Player.h"
@@ -135,7 +137,7 @@ public:
                 continue;
             if (DisableMgr::IsDisabledFor(DISABLE_TYPE_SPELL, spellInfo->Id, player))
                 continue;
-            if ((spellInfo->AttributesEx7 & SPELL_ATTR7_ALLIANCE_ONLY && player->GetTeamId() != ALLIANCE) || (spellInfo->AttributesEx7 & SPELL_ATTR7_HORDE_ONLY && player->GetTeamId() != HORDE))
+            if ((spellInfo->AttributesEx7 & SPELL_ATTR7_ALLIANCE_ONLY && player->GetTeamId() != TEAM_ALLIANCE) || (spellInfo->AttributesEx7 & SPELL_ATTR7_HORDE_ONLY && player->GetTeamId() != TEAM_HORDE))
                 continue;
             if (spellInfo->BaseLevel != level && sSpellMgr->IsSpellValid(spellInfo))
                 continue;
