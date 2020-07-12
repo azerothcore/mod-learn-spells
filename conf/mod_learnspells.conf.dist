@@ -12,13 +12,22 @@ LearnSpells.Enable = 1
 
 LearnSpells.Announce = 1
 
-# Should the player receive all spells on first login?
-# Useful for instant leveling type of servers
-# (1: true | 0: false)
-
-LearnSpells.LearnAllOnFirstLogin = 0
-
 # Max level Limit the player will learn spells
 # 	Default:  = 80
 
 MaxLevel = 80
+
+# LearnMount learns the player a mount skill
+# 	default 0 = Disable 1 = Enable
+
+LearnMount =0
+
+# MountReqLevel required level to learn the skill
+# 	default 20
+
+MountReqLevel = 20
+
+# MountSpell spell of the mount skill
+# default = 33388
+
+MountSpell = 33388

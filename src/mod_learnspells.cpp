@@ -1,20 +1,62 @@
-#include "Chat.h"
-#include "Config.h"
+﻿#include "ScriptPCH.h"
 #include "DisableMgr.h"
+#include "Config.h"
+#include "Configuration/Config.h"
 #include "Player.h"
-#include "ScriptMgr.h"
-#include "SpellInfo.h"
 
-uint32 MaxLevel;
+static uint32 MaxLevel, MountLevel, MountSpell;
+static bool learnmount;
 
 class LearnSpellsOnLevelUp : public PlayerScript
 {
-  public:
+public:
+    std::vector<uint32> ignoreSpells;
+
     LearnSpellsOnLevelUp() : PlayerScript("LearnSpellsOnLevelUp")
     {
+        uint32 temp[] = {
+            64380, 23885, 23880, 44461, 25346, 10274, 10273, 8418,
+            8419, 7270, 7269, 7268, 54648, 12536, 24530, 70909,
+            12494, 57933, 24224, 27095, 27096, 27097, 27099, 32841,
+            56131, 56160, 56161, 48153, 34754, 64844, 64904, 48085,
+            33110, 48084, 28276, 27874, 27873, 7001, 49821, 53022,
+            47757, 47750, 47758, 47666, 53001, 52983, 52998, 52986,
+            52987, 52999, 52984, 53002, 53003, 53000, 52988, 52985,
+            42208, 42209, 42210, 42211, 42212, 42213, 42198, 42937,
+            42938, 12484, 12485, 12486, 44461, 55361, 55362, 34913,
+            43043, 43044, 38703, 38700, 27076, 42844, 42845, 64891,
+            25912, 25914, 25911, 25913, 25902, 25903, 27175, 27176,
+            33073, 33074, 48822, 48820, 48823, 48821, 20154, 25997,
+            20467, 20425, 67, 26017, 34471, 53254, 13812, 14314,
+            14315, 27026, 49064, 49065, 60202, 60210, 13797, 14298,
+            14299, 14300, 14301, 27024, 49053, 49054, 52399, 1742,
+            24453, 53548, 53562, 52016, 26064, 35346, 57386, 57389,
+            57390, 57391, 57392, 57393, 55509, 35886, 43339, 45297,
+            45298, 45299, 45300, 45301, 45302, 49268, 49269, 8349,
+            8502, 8503, 11306, 11307, 25535, 25537, 61650, 61654,
+            63685, 45284, 45286, 45287, 45288, 45289, 45290, 45291,
+            45292, 45293, 45294, 45295, 45296, 49239, 49240, 26364,
+            26365, 26366, 26367, 26369, 26370, 26363, 26371, 26372,
+            49278, 49279, 32176, 32175, 21169, 47206, 27285, 47833,
+            47836, 42223, 42224, 42225, 42226, 42218, 47817, 47818,
+            42231, 42232, 42233, 42230, 48466, 44203, 44205, 44206,
+            44207, 44208, 48444, 48445, 33891, 52374, 57532, 59921,
+            52372, 49142, 52375, 47633, 47632, 52373, 50536, 27214,
+            47822, 11682, 11681, 5857, 1010, 24907, 24905, 53227,
+            61391, 61390, 61388, 61387, 64801, 5421, 9635, 1178,
+            20186, 20185, 20184, 20187, 25899, 24406, 50581, 30708,
+            48076, 62900, 62901, 62902, 59671, 50589, 66906, 66907,
+            24131, 23455, 23458, 23459, 27803, 27804, 27805, 25329,
+            48075, 42243, 42244, 42245, 42234, 58432, 58433, 65878,
+            18848, 16979, 49376, 54055, 20647, 3127, 2836, 5500, 29858,
+            5784, 23161, 5225, 62600, 20719, 674, 8737, 6197, 1462, 883,
+            1515, 6991, 2641, 19885, 6196, 66842, 66843, 66844, 750, 12678
+        };
+
+        ignoreSpells = std::vector<uint32>(temp, temp + sizeof(temp) / sizeof(temp[0]));
     }
 
-    void OnLogin(Player* player) override
+    void OnLogin(Player *player)
     {
         if (sConfigMgr->GetBoolDefault("LearnSpells.Enable", true))
         {
@@ -25,307 +67,134 @@ class LearnSpellsOnLevelUp : public PlayerScript
         }
     }
 
-    void OnFirstLogin(Player* player) override
-    {
-        if (sConfigMgr->GetBoolDefault("LearnSpells.LearnAllOnFirstLogin", false))
-        {
-            LearnSpellsForNewLevel(player, 1);
-        }
-    }
-
-    void OnLevelChanged(Player* player, uint8 oldLevel) override
+    void OnLevelChanged(Player* player, uint8 oldLevel)
     {
         if (sConfigMgr->GetBoolDefault("LearnSpells.Enable", true))
         {
-            if (player->getLevel() <= MaxLevel)
+            if (player->getLevel() < MaxLevel)
             {
                 if (oldLevel < player->getLevel())
                     LearnSpellsForNewLevel(player, oldLevel);
             }
         }
+
+        if (learnmount)
+        {
+            if (player->getLevel() == MountLevel)
+                player->learnSpell(MountSpell);
+        }
     }
-
-  private:
-    std::unordered_set<uint32> m_ignoreSpells = {
-        64380, 23885, 23880, 44461, 25346, 10274, 10273, 8418,  8419,  7270,  7269,  7268,  54648, 12536, 24530, 70909, 12494, 57933, 24224, 27095, 27096, 27097, 27099, 32841, 56131, 56160, 56161, 48153, 34754, 64844, 64904, 48085, 33110, 48084,
-        28276, 27874, 27873, 7001,  49821, 53022, 47757, 47750, 47758, 47666, 53001, 52983, 52998, 52986, 52987, 52999, 52984, 53002, 53003, 53000, 52988, 52985, 42208, 42209, 42210, 42211, 42212, 42213, 42198, 42937, 42938, 12484, 12485, 12486,
-        44461, 55361, 55362, 34913, 43043, 43044, 38703, 38700, 27076, 42844, 42845, 64891, 25912, 25914, 25911, 25913, 25902, 25903, 27175, 27176, 33073, 33074, 48822, 48820, 48823, 48821, 20154, 25997, 20467, 20425, 67,    26017, 34471, 53254,
-        13812, 14314, 14315, 27026, 49064, 49065, 60202, 60210, 13797, 14298, 14299, 14300, 14301, 27024, 49053, 49054, 52399, 1742,  24453, 53548, 53562, 52016, 26064, 35346, 57386, 57389, 57390, 57391, 57392, 57393, 55509, 35886, 43339, 45297,
-        45298, 45299, 45300, 45301, 45302, 49268, 49269, 8349,  8502,  8503,  11306, 11307, 25535, 25537, 61650, 61654, 63685, 45284, 45286, 45287, 45288, 45289, 45290, 45291, 45292, 45293, 45294, 45295, 45296, 49239, 49240, 26364, 26365, 26366,
-        26367, 26369, 26370, 26363, 26371, 26372, 49278, 49279, 32176, 32175, 21169, 47206, 27285, 47833, 47836, 42223, 42224, 42225, 42226, 42218, 47817, 47818, 42231, 42232, 42233, 42230, 48466, 44203, 44205, 44206, 44207, 44208, 48444, 48445,
-        33891, 52374, 57532, 59921, 52372, 49142, 52375, 47633, 47632, 52373, 50536, 27214, 47822, 11682, 11681, 5857,  1010,  24907, 24905, 53227, 61391, 61390, 61388, 61387, 64801, 5421,  9635,  1178,  20186, 20185, 20184, 20187, 25899, 24406,
-        50581, 30708, 48076, 62900, 62901, 62902, 59671, 50589, 66906, 66907, 24131, 23455, 23458, 23459, 27803, 27804, 27805, 25329, 48075, 42243, 42244, 42245, 42234, 58432, 58433, 65878, 18848, 16979, 49376, 54055, 20647, 42243, 24131,
-    };
-
-    struct AddSpell // Additional Spell Entry
-    {
-        uint32 spellId;
-        TeamId faction = TeamId::TEAM_NEUTRAL;
-    };
-    // { level: { SPELL_FAMILY_NAME: [{ spellId: uint32, faction: TeamId }] } }
-    using SpellFamilyToExtraSpells = std::unordered_map<uint32, std::vector<AddSpell>>;
-    using AdditionalSpellsList = std::unordered_map<uint8, SpellFamilyToExtraSpells>;
-    // -------------------------------------------- ^^^^^ level
-
-    AdditionalSpellsList m_additionalSpells = {
-        {6,
-         {
-             {SPELLFAMILY_WARRIOR,
-              {
-                  AddSpell{.spellId = 3127}, // parry
-              }},
-         }},
-        {8,
-         {
-             {SPELLFAMILY_HUNTER,
-              {
-                  AddSpell{.spellId = 3127}, // parry
-              }},
-             {SPELLFAMILY_PALADIN,
-              {
-                  AddSpell{.spellId = 3127}, // parry
-              }},
-         }},
-        {10,
-         {
-             {SPELLFAMILY_HUNTER,
-              {
-                  AddSpell{.spellId = 1515}, // tame beast
-              }},
-         }},
-        {12,
-         {
-             {SPELLFAMILY_ROGUE,
-              {
-                  AddSpell{.spellId = 3127}, // parry
-              }},
-         }},
-        {14,
-         {
-             {SPELLFAMILY_HUNTER,
-              {
-                  AddSpell{.spellId = 6197}, // eagle eye
-              }},
-         }},
-        {20,
-         {
-             {SPELLFAMILY_WARRIOR,
-              {
-                  AddSpell{.spellId = 674},   // dual wield
-                  AddSpell{.spellId = 12678}, // stance mastery
-              }},
-             {SPELLFAMILY_HUNTER,
-              {
-                  AddSpell{.spellId = 674}, // dual wield
-              }},
-         }},
-        {24,
-         {
-             {SPELLFAMILY_HUNTER,
-              {
-                  AddSpell{.spellId = 1462}, //  Beast Lore
-              }},
-             {SPELLFAMILY_ROGUE,
-              {
-                  AddSpell{.spellId = 2836}, //  Detect Traps
-              }},
-             {SPELLFAMILY_WARLOCK,
-              {
-                  AddSpell{.spellId = 5500}, //  Sense Demons
-              }},
-         }},
-        {24,
-         {
-             {SPELLFAMILY_SHAMAN,
-              {
-                  AddSpell{.spellId = 6196}, //  Far Sight
-              }},
-         }},
-        {30,
-         {
-             {SPELLFAMILY_SHAMAN,
-              {
-                  AddSpell{.spellId = 66842}, // Call of the Elements
-              }},
-         }},
-        {32,
-         {
-             {SPELLFAMILY_DRUID,
-              {
-                  AddSpell{.spellId = 5225}, // Track Humanoids
-              }},
-         }},
-        {40,
-         {
-             {SPELLFAMILY_SHAMAN,
-              {
-                  AddSpell{.spellId = 66843}, // Call of the Ancestors
-              }},
-             {SPELLFAMILY_DRUID,
-              {
-                  AddSpell{.spellId = 20719}, // Feline Grace
-                  AddSpell{.spellId = 62600}, // Savage Defense
-              }},
-         }},
-        {50,
-         {
-             {SPELLFAMILY_SHAMAN,
-              {
-                  AddSpell{.spellId = 66844}, // Call of the Spirits
-              }},
-         }},
-        {66,
-         {
-             {SPELLFAMILY_PALADIN,
-              {
-                  AddSpell{.spellId = 53736, .faction = TeamId::TEAM_HORDE},    // Seal of Corruption
-                  AddSpell{.spellId = 31801, .faction = TeamId::TEAM_ALLIANCE}, // Seal of Vengeance
-              }},
-             {SPELLFAMILY_WARLOCK,
-              {
-                  AddSpell{.spellId = 29858}, // Soulshatter
-              }},
-         }},
-        {70,
-         {
-             {SPELLFAMILY_SHAMAN,
-              {
-                  AddSpell{.spellId = 2825, .faction = TeamId::TEAM_HORDE},     // Bloodlust
-                  AddSpell{.spellId = 32182, .faction = TeamId::TEAM_ALLIANCE}, // Heroism
-              }},
-         }},
-        {80,
-         {
-             {SPELLFAMILY_WARLOCK,
-              {
-                  AddSpell{.spellId = 47836}, // Seed of Corruption (rank 3)
-              }},
-         }},
-    };
 
     bool IsIgnoredSpell(uint32 spellID)
     {
-        auto spellIt = m_ignoreSpells.find(spellID);
-        return spellIt != m_ignoreSpells.end();
+        for (std::vector<uint32>::const_iterator itr = ignoreSpells.begin(); itr != ignoreSpells.end(); ++itr)
+            if (spellID == (*itr))
+                return true;
+        return false;
     }
 
-    void LearnSpellsForNewLevel(Player* player, uint8 fromLevel)
+    void LearnSpellsForNewLevel(Player* player, uint8 level)
     {
-        uint8 upToLevel = player->getLevel();
-        uint32 family = GetSpellFamily(player);
-
-        for (int level = fromLevel; level <= upToLevel; level++)
-        {
-            ApplyAdditionalSpells(level, family, player);
-            for (uint32 i = 0; i < sSpellMgr->GetSpellInfoStoreSize(); ++i)
-            {
-                SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(i);
-
-                if (!spellInfo)
-                    continue;
-                if (spellInfo->SpellFamilyName != family)
-                    continue;
-                if ((spellInfo->AttributesEx7 & SPELL_ATTR7_ALLIANCE_ONLY && player->GetTeamId() != TEAM_ALLIANCE) || (spellInfo->AttributesEx7 & SPELL_ATTR7_HORDE_ONLY && player->GetTeamId() != TEAM_HORDE))
-                    continue;
-                if (spellInfo->PowerType == POWER_FOCUS)
-                    continue;
-                if (IsIgnoredSpell(spellInfo->Id))
-                    continue;
-                if (DisableMgr::IsDisabledFor(DISABLE_TYPE_SPELL, spellInfo->Id, player))
-                    continue;
-                if (spellInfo->BaseLevel != uint32(level) && sSpellMgr->IsSpellValid(spellInfo))
-                    continue;
-
-                bool valid = false;
-
-                SkillLineAbilityMapBounds bounds = sSpellMgr->GetSkillLineAbilityMapBounds(spellInfo->Id);
-
-                for (SkillLineAbilityMap::const_iterator itr = bounds.first; itr != bounds.second; ++itr)
-                {
-                    if (itr->second->spellId == spellInfo->Id && itr->second->racemask == 0 && itr->second->learnOnGetSkill == 0)
-                    {
-                        valid = true;
-                        SpellInfo const* prevSpell = spellInfo->GetPrevRankSpell();
-                        if (prevSpell && !player->HasSpell(prevSpell->Id))
-                        {
-                            valid = false;
-                            break;
-                        }
-                        if (GetTalentSpellPos(itr->second->spellId))
-                            if (!prevSpell || !player->HasSpell(prevSpell->Id) || spellInfo->GetRank() == 1)
-                                valid = false;
-                        break;
-                    }
-                }
-
-                if (valid)
-                    player->learnSpell(spellInfo->Id);
-            }
-        }
-    }
-
-    void ApplyAdditionalSpells(uint8 level, uint32 playerSpellFamily, Player* player)
-    {
-        auto spells = m_additionalSpells.find(level);
-        if (spells != m_additionalSpells.end())
-        {
-            SpellFamilyToExtraSpells spellsMap = spells->second;
-            auto spellsForPlayersFamily = spellsMap.find(playerSpellFamily);
-            if (spellsForPlayersFamily != spellsMap.end())
-            {
-                vector<AddSpell> additionalSpellsToTeach = spellsForPlayersFamily->second;
-                for (auto const& spell : additionalSpellsToTeach)
-                {
-                    if (!(player->HasSpell(spell.spellId)) && (spell.faction == TeamId::TEAM_NEUTRAL || spell.faction == player->GetTeamId()))
-                    {
-                        player->learnSpell(spell.spellId);
-                    }
-                }
-            }
-        }
-    }
-
-    uint32 GetSpellFamily(const Player* p)
-    {
-        switch (p->getClass())
+        if (level == player->getLevel() + 1)
+            return;
+        uint32 family;
+        switch (player->getClass())
         {
         case CLASS_ROGUE:
-            return SPELLFAMILY_ROGUE;
+            family = SPELLFAMILY_ROGUE;
+            break;
         case CLASS_DEATH_KNIGHT:
-            return SPELLFAMILY_DEATHKNIGHT;
+            family = SPELLFAMILY_DEATHKNIGHT;
+            break;
         case CLASS_WARRIOR:
-            return SPELLFAMILY_WARRIOR;
+            family = SPELLFAMILY_WARRIOR;
+            break;
         case CLASS_PRIEST:
-            return SPELLFAMILY_PRIEST;
+            family = SPELLFAMILY_PRIEST;
+            break;
         case CLASS_MAGE:
-            return SPELLFAMILY_MAGE;
+            family = SPELLFAMILY_MAGE;
+            break;
         case CLASS_PALADIN:
-            return SPELLFAMILY_PALADIN;
+            family = SPELLFAMILY_PALADIN;
+            break;
         case CLASS_HUNTER:
-            return SPELLFAMILY_HUNTER;
+            family = SPELLFAMILY_HUNTER;
+            break;
         case CLASS_DRUID:
-            return SPELLFAMILY_DRUID;
+            family = SPELLFAMILY_DRUID;
+            break;
         case CLASS_SHAMAN:
-            return SPELLFAMILY_SHAMAN;
+            family = SPELLFAMILY_SHAMAN;
+            break;
         case CLASS_WARLOCK:
-            return SPELLFAMILY_WARLOCK;
-        default:
-            return SPELLFAMILY_GENERIC;
+            family = SPELLFAMILY_WARLOCK;
+            break;
         }
+        for (uint32 i = 0; i < sSpellMgr->GetSpellInfoStoreSize(); ++i)
+        {
+            SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(i);
+            if (!spellInfo)
+                continue;
+            if (spellInfo->SpellFamilyName != family)
+                continue;
+            if (IsIgnoredSpell(spellInfo->Id))
+                continue;
+            if (spellInfo->PowerType == POWER_FOCUS)
+                continue;
+            if (DisableMgr::IsDisabledFor(DISABLE_TYPE_SPELL, spellInfo->Id, player))
+                continue;
+            if ((spellInfo->AttributesEx7 & SPELL_ATTR7_ALLIANCE_ONLY && player->GetTeamId() != ALLIANCE) || (spellInfo->AttributesEx7 & SPELL_ATTR7_HORDE_ONLY && player->GetTeamId() != HORDE))
+                continue;
+            if (spellInfo->BaseLevel != level && sSpellMgr->IsSpellValid(spellInfo))
+                continue;
+
+            bool valid = false;
+
+            SkillLineAbilityMapBounds bounds = sSpellMgr->GetSkillLineAbilityMapBounds(spellInfo->Id);
+            for (SkillLineAbilityMap::const_iterator itr = bounds.first; itr != bounds.second; ++itr)
+            {
+                if (itr->second->spellId == spellInfo->Id && itr->second->racemask == 0 && itr->second->learnOnGetSkill == 0)
+                {
+                    valid = true;
+                    SpellInfo const* prevSpell = spellInfo->GetPrevRankSpell();
+                    if (prevSpell && !player->HasSpell(prevSpell->Id))
+                    {
+                        valid = false;
+                        break;
+                    }
+                    if (GetTalentSpellPos(itr->second->spellId))
+                        if (!prevSpell || !player->HasSpell(prevSpell->Id) || spellInfo->GetRank() == 1)
+                            valid = false;
+                    break;
+                }
+            }
+
+            if (valid)
+                player->learnSpell(spellInfo->Id);
+
+
+        }
+        LearnSpellsForNewLevel(player, ++level);
     }
 };
 
 class LearnAllSpellsWorld : public WorldScript
 {
-  public:
-    LearnAllSpellsWorld() : WorldScript("LearnAllSpellsWorld")
+public:
+    LearnAllSpellsWorld() : WorldScript("LearnAllSpellsWorld") { }
+
+    void SetInitialWorldSettings()
     {
+        learnmount = sConfigMgr->GetIntDefault("LearnMount", 0);
+        MountLevel = sConfigMgr->GetIntDefault("MountReqLevel", 20);
+        MountSpell = sConfigMgr->GetIntDefault("MountSpell", 33388);
+
     }
 
     void OnBeforeConfigLoad(bool reload) override
     {
-        if (!reload)
-        {
+        if (!reload) {
             std::string conf_path = _CONF_DIR;
             std::string cfg_file = conf_path + "/mod_learnspells.conf";
 #ifdef WIN32
