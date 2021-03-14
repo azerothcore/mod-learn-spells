@@ -49,11 +49,11 @@ class LearnSpellsOnLevelUp : public PlayerScript
         if (learnspells_enable){
             if (!learnspells_gmonly || (learnspells_gmonly && player->GetSession()->GetSecurity() > 0))
             {
-				if (player->getLevel() <= learnspells_maxlevel){
-					if (oldLevel < player->getLevel())
-						LearnSpellsForNewLevel(player, oldLevel);
-				}
-			}
+                if (player->getLevel() <= learnspells_maxlevel){
+                    if (oldLevel < player->getLevel())
+                        LearnSpellsForNewLevel(player, oldLevel);
+                }
+            }
         }
     }
 
