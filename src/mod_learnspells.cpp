@@ -8,6 +8,7 @@
 static bool learnlpells_announce;
 static bool learnspells_enable;
 static bool learnspells_onfirstlogin;
+static bool learnspells_gmonly;
 static uint32 learnspells_maxlevel;
 
 class LearnAllSpellseBeforeConfigLoad : public WorldScript {
@@ -18,6 +19,7 @@ public:
     void OnBeforeConfigLoad(bool /*reload*/) override {
         learnlpells_announce = sConfigMgr->GetBoolDefault("LearnSpells.Announce", 1);
         learnspells_enable = sConfigMgr->GetBoolDefault("LearnSpells.Enable", 1);
+        learnspells_gmonly = sConfigMgr->GetBoolDefault("LearnSpells.OnlyGM", 1);
         learnspells_onfirstlogin = sConfigMgr->GetBoolDefault("LearnSpells.OnFirstLogin", 0);
         learnspells_maxlevel = sConfigMgr->GetIntDefault("learnspells_maxlevel", 80);
     }
@@ -26,9 +28,7 @@ public:
 class LearnSpellsOnLevelUp : public PlayerScript
 {
   public:
-    LearnSpellsOnLevelUp() : PlayerScript("LearnSpellsOnLevelUp")
-    {
-    }
+    LearnSpellsOnLevelUp() : PlayerScript("LearnSpellsOnLevelUp") { }
 
     void OnLogin(Player* player) override
     {
@@ -46,11 +46,14 @@ class LearnSpellsOnLevelUp : public PlayerScript
 
     void OnLevelChanged(Player* player, uint8 oldLevel) override
     {
-        if (sConfigMgr->GetBoolDefault("LearnSpells.Enable", true)){
-            if (player->getLevel() <= learnspells_maxlevel){
-                if (oldLevel < player->getLevel())
-                    LearnSpellsForNewLevel(player, oldLevel);
-            }
+        if (learnspells_enable){
+            if (!learnspells_gmonly || (learnspells_gmonly && player->GetSession()->GetSecurity() > 0))
+            {
+				if (player->getLevel() <= learnspells_maxlevel){
+					if (oldLevel < player->getLevel())
+						LearnSpellsForNewLevel(player, oldLevel);
+				}
+			}
         }
     }
 
@@ -137,6 +140,7 @@ class LearnSpellsOnLevelUp : public PlayerScript
              {SPELLFAMILY_HUNTER,
               {
                   AddSpell{1462}, //  Beast Lore
+                  AddSpell{19885}, // track hidden
               }},
              {SPELLFAMILY_ROGUE,
               {
@@ -147,7 +151,7 @@ class LearnSpellsOnLevelUp : public PlayerScript
                   AddSpell{5500}, //  Sense Demons
               }},
          }},
-        {24,
+        {26,
          {
              {SPELLFAMILY_SHAMAN,
               {
@@ -173,11 +177,24 @@ class LearnSpellsOnLevelUp : public PlayerScript
              {SPELLFAMILY_SHAMAN,
               {
                   AddSpell{66843}, // Call of the Ancestors
+                  AddSpell{8737}, // mail
+              }},
+             {SPELLFAMILY_HUNTER,
+              {
+                  AddSpell{8737}, // mail
               }},
              {SPELLFAMILY_DRUID,
               {
                   AddSpell{20719}, // Feline Grace
                   AddSpell{62600}, // Savage Defense
+              }},
+             {SPELLFAMILY_WARRIOR,
+              {
+                  AddSpell{750}, // plate mail
+              }},
+             {SPELLFAMILY_PALADIN,
+              {
+                  AddSpell{750}, // plate mail
               }},
          }},
         {50,
