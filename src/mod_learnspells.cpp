@@ -46,13 +46,10 @@ class LearnSpellsOnLevelUp : public PlayerScript
 
     void OnLevelChanged(Player* player, uint8 oldLevel) override
     {
-        if (learnspells_enable){
-            if (!learnspells_gmonly || (learnspells_gmonly && player->GetSession()->GetSecurity() > 0))
-            {
-                if (player->getLevel() <= learnspells_maxlevel){
-                    if (oldLevel < player->getLevel())
-                        LearnSpellsForNewLevel(player, oldLevel);
-                }
+        if (learnspells_enable && (!learnspells_gmonly || (learnspells_gmonly && player->GetSession()->GetSecurity() > 0))){
+            if (player->getLevel() <= learnspells_maxlevel){
+                if (oldLevel < player->getLevel())
+                    LearnSpellsForNewLevel(player, oldLevel);
             }
         }
     }
