@@ -8,6 +8,10 @@
 
 LearnSpells.Enable = 1
 
+# Enable the module only for GM? (1: true | 0: false)
+
+LearnSpells.OnlyGM=0
+
 # Announce the module when the player logs in?
 
 LearnSpells.Announce = 1
