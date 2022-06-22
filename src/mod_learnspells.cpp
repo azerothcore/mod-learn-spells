@@ -61,6 +61,7 @@ private:
             {SPELLFAMILY_WARRIOR,
             {
                 AddSpell{3127}, // parry
+                AddSpell{750}, // Plate
             }},
         }},
         {8,
@@ -72,6 +73,7 @@ private:
             {SPELLFAMILY_PALADIN,
             {
                 AddSpell{3127}, // parry
+                AddSpell{750}, // Plate
             }},
         }},
         {10,
