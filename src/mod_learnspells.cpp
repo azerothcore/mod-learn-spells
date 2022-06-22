@@ -112,6 +112,7 @@ private:
             {SPELLFAMILY_HUNTER,
             {
                 AddSpell{1462}, //  Beast Lore
+                AddSpell{982}, // Revive Pet
             }},
             {SPELLFAMILY_ROGUE,
             {
