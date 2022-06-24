@@ -61,6 +61,7 @@ private:
             {SPELLFAMILY_WARRIOR,
             {
                 AddSpell{3127}, // parry
+                AddSpell{750}, // Plate
             }},
         }},
         {8,
@@ -72,6 +73,7 @@ private:
             {SPELLFAMILY_PALADIN,
             {
                 AddSpell{3127}, // parry
+                AddSpell{750}, // Plate
             }},
         }},
         {10,
@@ -112,6 +114,11 @@ private:
             {SPELLFAMILY_HUNTER,
             {
                 AddSpell{1462}, //  Beast Lore
+                AddSpell{982}, // Revive Pet
+                AddSpell{2641}, // Dismiss Pet
+                AddSpell{6991}, // Feed Pet
+                AddSpell{883}, // Call Pet
+
             }},
             {SPELLFAMILY_ROGUE,
             {
