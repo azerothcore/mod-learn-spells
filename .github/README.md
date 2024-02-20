@@ -7,8 +7,6 @@
 
 [![Build Status](https://github.com/azerothcore/mod-learn-spells/workflows/core-build/badge.svg?branch=master&event=push)](https://github.com/azerothcore/mod-learn-spells)
 
-![icon](https://github.com/azerothcore/mod-1v1-arena/assets/2810187/ba375f70-71c7-4c71-aa3f-d3ab6c6fdda7)
-
 #### Features:
 
 LearnAllSpells teach new spells on level-up, like in Cataclysm and up.
