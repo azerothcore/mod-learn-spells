@@ -125,6 +125,7 @@ private:
             {SPELLFAMILY_HUNTER,
             {
                 AddSpell{1462}, //  Beast Lore
+                AddSpell{19885}, //  Track Hidden
             }},
             {SPELLFAMILY_ROGUE,
             {
