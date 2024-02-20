@@ -38,7 +38,7 @@ private:
         26367, 26369, 26370, 26363, 26371, 26372, 49278, 49279, 32176, 32175, 21169, 47206, 27285, 47833, 47836, 42223, 42224, 42225, 42226, 42218, 47817, 47818, 42231, 42232, 42233, 42230, 48466, 44203, 44205, 44206, 44207, 44208, 48444, 48445,
         33891, 52374, 57532, 59921, 52372, 49142, 52375, 47633, 47632, 52373, 50536, 27214, 47822, 11682, 11681, 5857,  1010,  24907, 24905, 53227, 61391, 61390, 61388, 61387, 64801, 5421,  9635,  1178,  20186, 20185, 20184, 20187, 25899, 24406,
         50581, 30708, 48076, 62900, 62901, 62902, 59671, 50589, 66906, 66907, 24131, 23455, 23458, 23459, 27803, 27804, 27805, 25329, 48075, 42243, 42244, 42245, 42234, 58432, 58433, 65878, 18848, 16979, 49376, 54055, 20647, 42243, 24131, 45470,
-        31898, 31804, 53733, 31803, 53742, 53725, 53726, 1804,
+        31898, 31804, 53733, 31803, 53742, 53725, 53726, 1804, 348, 1455, 1456, 11687, 11688, 11689, 27222, 57946,
         // COSMETIC SPELLS
         28271, 28272, 61025, 61305, 61721, 61780,
         // OPTIONAL QUEST SPELLS
@@ -57,6 +57,13 @@ private:
 
     AdditionalSpellsList m_additionalSpells =
     {
+        {3,
+        {
+            {SPELLFAMILY_WARLOCK,
+            {
+                AddSpell{348}, // Immolate
+            }},
+        }},
         {6,
         {
             {SPELLFAMILY_WARRIOR,
@@ -105,6 +112,10 @@ private:
             {
                 AddSpell{1804}, // Pick Lock
             }},
+            {SPELLFAMILY_WARLOCK,
+            {
+                AddSpell{1455}, // Life Tap (R2)
+            }},
         }},
         {20,
         {
@@ -147,6 +158,13 @@ private:
                 AddSpell{6196}, //  Far Sight
             }},
         }},
+        {26,
+        {
+            {SPELLFAMILY_WARLOCK,
+            {
+                AddSpell{1456}, // Life Tap (R3)
+            }},
+        }},
         {30,
         {
             {SPELLFAMILY_SHAMAN,
@@ -159,6 +177,13 @@ private:
             {SPELLFAMILY_DRUID,
             {
                 AddSpell{5225}, // Track Humanoids
+            }},
+        }},
+        {36,
+        {
+            {SPELLFAMILY_WARLOCK,
+            {
+                AddSpell{11687}, // Life Tap (R4)
             }},
         }},
         {40,
@@ -192,11 +217,25 @@ private:
                   AddSpell{62600}, // Savage Defense
               }},
          }},
+        {46,
+        {
+           {SPELLFAMILY_WARLOCK,
+           {
+               AddSpell{11688}, // Life Tap (R5)
+           }},
+        }},
         {50,
         {
             {SPELLFAMILY_SHAMAN,
             {
                 AddSpell{66844}, // Call of the Spirits
+            }},
+        }},
+        {56,
+        {
+            {SPELLFAMILY_WARLOCK,
+            {
+                AddSpell{11689}, // Life Tap (R6)
             }},
         }},
         {66,
@@ -209,6 +248,13 @@ private:
             {SPELLFAMILY_WARLOCK,
             {
                 AddSpell{29858}, // Soulshatter
+            }},
+        }},
+        {68,
+        {
+            {SPELLFAMILY_WARLOCK,
+            {
+                AddSpell{27222}, // Life Tap (R7)
             }},
         }},
         {70,
@@ -224,6 +270,7 @@ private:
             {SPELLFAMILY_WARLOCK,
             {
                 AddSpell{47836}, // Seed of Corruption (rank 3)
+                AddSpell{57946}, // Life Tap (R8)
             }},
         }},
     };
