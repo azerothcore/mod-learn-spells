@@ -142,9 +142,6 @@ private:
             {
                 AddSpell{5500}, //  Sense Demons
             }},
-        }},
-        {24,
-        {
             {SPELLFAMILY_SHAMAN,
             {
                 AddSpell{6196}, //  Far Sight
