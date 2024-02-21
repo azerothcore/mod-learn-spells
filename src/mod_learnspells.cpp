@@ -38,7 +38,7 @@ private:
         26367, 26369, 26370, 26363, 26371, 26372, 49278, 49279, 32176, 32175, 21169, 47206, 27285, 47833, 47836, 42223, 42224, 42225, 42226, 42218, 47817, 47818, 42231, 42232, 42233, 42230, 48466, 44203, 44205, 44206, 44207, 44208, 48444, 48445,
         33891, 52374, 57532, 59921, 52372, 49142, 52375, 47633, 47632, 52373, 50536, 27214, 47822, 11682, 11681, 5857,  1010,  24907, 24905, 53227, 61391, 61390, 61388, 61387, 64801, 5421,  9635,  1178,  20186, 20185, 20184, 20187, 25899, 24406,
         50581, 30708, 48076, 62900, 62901, 62902, 59671, 50589, 66906, 66907, 24131, 23455, 23458, 23459, 27803, 27804, 27805, 25329, 48075, 42243, 42244, 42245, 42234, 58432, 58433, 65878, 18848, 16979, 49376, 54055, 20647, 42243, 24131, 45470,
-        31898, 31804, 53733, 31803, 53742, 53725, 53726, 1804, 348, 1455, 1456, 11687, 11688, 11689, 27222, 57946, 25306, 53652, 53653, 53654,
+        31898, 31804, 53733, 31803, 53742, 53725, 53726, 1804, 348, 1455, 1456, 11687, 11688, 11689, 27222, 57946, 25306, 53652, 53653, 53654, 7328, 10322, 10324, 20772, 20773, 48949, 48950,
 
         //Dalaran Brilliance and Dalaran Intellect mage class as they are spells purchased in Dalaran with limited sales by NPCs
         61316,61024,
@@ -102,6 +102,10 @@ private:
             {SPELLFAMILY_ROGUE,
             {
                 AddSpell{3127}, // parry
+            }},
+            {SPELLFAMILY_PALADIN,
+            {
+                AddSpell{7328}, // Redemption (R1)
             }},
         }},
         {14,
@@ -171,6 +175,10 @@ private:
             {
                 AddSpell{6196}, //  Far Sight
             }},
+            {SPELLFAMILY_PALADIN,
+            {
+                AddSpell{10322}, // Redemption (R2)
+            }},
         }},
         {26,
         {
@@ -213,6 +221,10 @@ private:
             {SPELLFAMILY_WARLOCK,
             {
                 AddSpell{11687}, // Life Tap (R4)
+            }},
+            {SPELLFAMILY_PALADIN,
+            {
+                AddSpell{10324}, // Redemption (R3)
             }},
         }},
         {40,
@@ -262,6 +274,13 @@ private:
                AddSpell{11688}, // Life Tap (R5)
            }},
         }},
+        {48,
+        {
+           {SPELLFAMILY_PALADIN,
+            {
+                AddSpell{20772}, // Redemption (R4)
+            }},
+        }},
         {50,
         {
             {SPELLFAMILY_SHAMAN,
@@ -287,6 +306,10 @@ private:
               {
                   AddSpell{35715, TeamId::TEAM_HORDE}, // Teleport: Shattrath
                   AddSpell{33690, TeamId::TEAM_ALLIANCE}, // Teleport: Shattrath
+              }},
+              {SPELLFAMILY_PALADIN,
+              {
+                  AddSpell{20773}, // Redemption (R5)
               }},
         }},
         {62,
@@ -329,6 +352,22 @@ private:
             {
                 AddSpell{2825, TeamId::TEAM_HORDE},     // Bloodlust
                 AddSpell{32182, TeamId::TEAM_ALLIANCE}, // Heroism
+            }},
+        }},
+        {72,
+        {
+            {SPELLFAMILY_PALADIN,
+            {
+                AddSpell{48949}, // Redemption (R6)
+                
+            }},
+        }},
+        {79,
+        {
+            {SPELLFAMILY_PALADIN,
+            {
+                AddSpell{48950}, // Redemption (R7)
+
             }},
         }},
         {80,
