@@ -142,6 +142,15 @@ private:
               AddSpell{34769, TeamId::TEAM_HORDE}, // Schlachtross beschwören
               AddSpell{13819, TeamId::TEAM_ALLIANCE}, // Schlachtross beschwören
             }},
+            {SPELLFAMILY_MAGE,
+            {
+              AddSpell{3567, TeamId::TEAM_HORDE}, // Teleport: Orgrimmar
+              AddSpell{32272, TeamId::TEAM_HORDE}, // Teleport: Silvermoon
+              AddSpell{3563, TeamId::TEAM_HORDE}, // Teleport: Undercity
+              AddSpell{3561, TeamId::TEAM_ALLIANCE}, // Teleport: Stormwind
+              AddSpell{3562, TeamId::TEAM_ALLIANCE}, // Teleport: Ironforge
+              AddSpell{32271, TeamId::TEAM_ALLIANCE}, // Teleport: Exodar
+            }},
         }},
         {24,
         {
@@ -176,12 +185,27 @@ private:
             {
                 AddSpell{66842}, // Call of the Elements
             }},
+            {SPELLFAMILY_MAGE,
+            {
+              AddSpell{3566, TeamId::TEAM_HORDE}, // Teleport: Thunder Bluf
+              AddSpell{3565, TeamId::TEAM_ALLIANCE}, // Teleport: Darnassus
+            }},
         }},
         {32,
         {
             {SPELLFAMILY_DRUID,
             {
                 AddSpell{5225}, // Track Humanoids
+            }},
+        }},
+        {35,
+        {
+            {SPELLFAMILY_MAGE,
+            {
+              AddSpell{49358, TeamId::TEAM_HORDE}, // Teleport: Stonard
+              AddSpell{49361, TeamId::TEAM_HORDE}, // Portal: Stonard
+              AddSpell{49359, TeamId::TEAM_ALLIANCE}, // Teleport: Theramore
+              AddSpell{49360, TeamId::TEAM_ALLIANCE}, // Portal: Theramore
             }},
         }},
         {36,
@@ -221,6 +245,15 @@ private:
                   AddSpell{20719}, // Feline Grace
                   AddSpell{62600}, // Savage Defense
               }},
+             {SPELLFAMILY_MAGE,
+              {
+                  AddSpell{11417, TeamId::TEAM_HORDE}, // Portal: Orgrimmar
+                  AddSpell{32267, TeamId::TEAM_HORDE}, // Portal: Silvermoon
+                  AddSpell{11418, TeamId::TEAM_HORDE}, // Portal: Undercity
+                  AddSpell{10059, TeamId::TEAM_ALLIANCE}, // Portal: Stormwind
+                  AddSpell{11416, TeamId::TEAM_ALLIANCE}, // Portal: Ironforge
+                  AddSpell{11419, TeamId::TEAM_ALLIANCE}, // Portal: Darnassus
+              }},
          }},
         {46,
         {
@@ -235,6 +268,11 @@ private:
             {
                 AddSpell{66844}, // Call of the Spirits
             }},
+            {SPELLFAMILY_MAGE,
+              {
+                  AddSpell{11420, TeamId::TEAM_HORDE}, // Portal: Thunder Bluff
+                  AddSpell{11419, TeamId::TEAM_ALLIANCE}, // Portal: Darnassus
+              }},
         }},
         {56,
         {
@@ -243,12 +281,28 @@ private:
                 AddSpell{11689}, // Life Tap (R6)
             }},
         }},
+        {60,
+        {
+              {SPELLFAMILY_MAGE,
+              {
+                  AddSpell{35715, TeamId::TEAM_HORDE}, // Teleport: Shattrath
+                  AddSpell{33690, TeamId::TEAM_ALLIANCE}, // Teleport: Shattrath
+              }},
+        }},
         {62,
         {
             {SPELLFAMILY_MAGE,
             {
                 AddSpell{25306}, // Fireball (R12)
             }},
+        }},
+        {65,
+        {
+              {SPELLFAMILY_MAGE,
+              {
+                  AddSpell{35717, TeamId::TEAM_HORDE}, // Portal: Shattrath
+                  AddSpell{33691, TeamId::TEAM_ALLIANCE}, // Portal: Shattrath
+              }},
         }},
         {66,
         {
