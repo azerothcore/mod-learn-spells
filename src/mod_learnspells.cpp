@@ -252,7 +252,7 @@ private:
                   AddSpell{11418, TeamId::TEAM_HORDE}, // Portal: Undercity
                   AddSpell{10059, TeamId::TEAM_ALLIANCE}, // Portal: Stormwind
                   AddSpell{11416, TeamId::TEAM_ALLIANCE}, // Portal: Ironforge
-                  AddSpell{11419, TeamId::TEAM_ALLIANCE}, // Portal: Darnassus
+                  AddSpell{32266, TeamId::TEAM_ALLIANCE}, // Portal: Exodar
               }},
          }},
         {46,
