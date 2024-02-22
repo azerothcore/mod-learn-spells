@@ -3,7 +3,6 @@
 ###################################################################################################
 #	Learn spells on level-up
 ###################################################################################################
-LearnSpells.OnFirstLogin = 0
 
 # Enable the module? (1: true | 0: false)
 
@@ -17,7 +16,7 @@ LearnSpells.Announce = 1
 # Useful for instant leveling type of servers
 # (1: true | 0: false)
 
-LearnSpells.LearnAllOnFirstLogin = 0
+LearnSpells.OnFirstLogin = 0
 
 # Max level Limit the player will learn spells
 # 	Default:  = 80
