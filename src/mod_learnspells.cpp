@@ -29,7 +29,7 @@ public:
     {
         if (sConfigMgr->GetOption<bool>("LearnSpells.Enable", true))
         {
-            if (player->getLevel() <= sConfigMgr->GetOption<uint8>("LearnSpells.MaxLevel", 80) && oldLevel < player->getLevel())
+            if (player->GetLevel() <= sConfigMgr->GetOption<uint8>("LearnSpells.MaxLevel", 80) && oldLevel < player->GetLevel())
                 LearnSpellsForNewLevel(player, oldLevel);
         }
     }
@@ -402,7 +402,7 @@ private:
 
     void LearnSpellsForNewLevel(Player* player, uint8 fromLevel)
     {
-        uint8 upToLevel = player->getLevel();
+        uint8 upToLevel = player->GetLevel();
         uint32 family = GetSpellFamily(player);
 
         for (int level = fromLevel; level <= upToLevel; level++)
