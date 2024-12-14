@@ -19,11 +19,11 @@ LearnAllSpells teach new spells on level-up, like in Cataclysm and up.
 
 1. Simply place the module under the `modules` folder of your AzerothCore source folder.
 2. Re-run cmake and launch a clean build of AzerothCore
-3. Run the Sql file into your database.
-4. Ready.
+3. Ready.
 
-**Original_script:**
+### AzerothCore Links:
 
-http://www.ac-web.org/forums/showthread.php?172918-C-Automatically-Learn-New-Spells
-
-AzerothCore: [repository](https://github.com/azerothcore) - [website](http://azerothcore.org) - [discord chat community](https://discord.gg/PaqQRkd)
+- GitHub: [Organisation](https://github.com/azerothcore)
+- GitHub: [WOTLK](https://github.com/azerothcore/azerothcore-wotlk) Repository
+- Website: [AzerothCore](http://azerothcore.org)
+- Discord: [AzerothCore](https://discord.com/invite/gkt4y2x)
