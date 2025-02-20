@@ -11,7 +11,7 @@ class LearnSpellsOnLevelUp : public PlayerScript
 public:
     LearnSpellsOnLevelUp() : PlayerScript("LearnSpellsOnLevelUp") { }
 
-    void OnFirstLogin(Player* player) override
+    void OnPlayerFirstLogin(Player* player) override
     {
         if (sConfigMgr->GetOption<bool>("LearnSpells.OnFirstLogin", 0))
         {
@@ -26,7 +26,7 @@ public:
 	}
     }
 
-    void OnLevelChanged(Player* player, uint8 oldLevel) override
+    void OnPlayerLevelChanged(Player* player, uint8 oldLevel) override
     {
         if (sConfigMgr->GetOption<bool>("LearnSpells.Enable", true))
         {
