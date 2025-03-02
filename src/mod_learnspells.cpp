@@ -9,21 +9,23 @@
 class LearnSpellsOnLevelUp : public PlayerScript
 {
 public:
-    LearnSpellsOnLevelUp() : PlayerScript("LearnSpellsOnLevelUp") { }
+    LearnSpellsOnLevelUp() : PlayerScript("LearnSpellsOnLevelUp", {
+        PLAYERHOOK_ON_FIRST_LOGIN,
+        PLAYERHOOK_ON_LEVEL_CHANGED
+    }) { }
 
     void OnPlayerFirstLogin(Player* player) override
     {
         if (sConfigMgr->GetOption<bool>("LearnSpells.OnFirstLogin", 0))
-        {
             LearnSpellsForNewLevel(player, 1);
+
+        if (player->getClass() == CLASS_SHAMAN)
+        {
+            player->AddItem(5175, 1); // Earth Totem
+            player->AddItem(5176, 1); // Fire Totem
+            player->AddItem(5177, 1); // Water Totem
+            player->AddItem(5178, 1); // Air Totem
         }
-	if (player->getClass() == CLASS_SHAMAN)
-	{
-	    player->AddItem(5175, 1); // Earth Totem
-	    player->AddItem(5176, 1); // Fire Totem
-	    player->AddItem(5177, 1); // Water Totem
-	    player->AddItem(5178, 1); // Air Totem
-	}
     }
 
     void OnPlayerLevelChanged(Player* player, uint8 oldLevel) override
@@ -480,9 +482,7 @@ private:
                 for (auto const& spell : additionalSpellsToTeach)
                 {
                     if (!(player->HasSpell(spell.spellId)) && (spell.faction == TeamId::TEAM_NEUTRAL || spell.faction == player->GetTeamId()))
-                    {
                         player->learnSpell(spell.spellId);
-                    }
                 }
             }
         }
